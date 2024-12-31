@@ -1,1 +1,5 @@
-import { states } from "./js/list.js";
+import { states } from "./products.js";
+
+states.forEach((place) => {
+  console.log(place.capital);
+});
