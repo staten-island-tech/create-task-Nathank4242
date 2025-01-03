@@ -13,7 +13,6 @@ function guessLetter(letter) {
   }
 
   if (selectedState.indexOf(letter) !== -1) {
-    // Correct guess
     console.log(`Correct! The letter "${letter}" is in the state.`);
     let newGuessedState = "";
     for (let i = 0; i < selectedState.length; i++) {
@@ -48,7 +47,6 @@ function guessState(stateName) {
   }
 }
 
-// Example game flow
-console.log("Welcome to Hangman! Guess the state.");
-
-console.log("State to guess:", guessedState); // Initially showing the blanks
+function submitGuess() {
+  const inputField = document.getElementById("inputField");
+}
