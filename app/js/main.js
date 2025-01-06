@@ -1,3 +1,5 @@
+import { states } from "./products.js";
+
 const randomIndex = Math.floor(Math.random() * states.length);
 
 const selectedState = states[randomIndex].state.toUpperCase();
@@ -47,6 +49,21 @@ function guessState(stateName) {
   }
 }
 
-function submitGuess() {
-  const inputField = document.getElementById("inputField");
-}
+document
+  .getElementById("card-form")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+    const input = document.getElementById("input").value;
+    const card = document.createElement("div");
+    card.className = "bg-white p-6 rounded-lg shadow-lg w-80 mx-auto my-4"; //
+    function createCard(card) {
+      card.innerHTML = `
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">${input}</h2>
+        <p class="text-gray-600">"hi"</p>
+    `;
+      document.getElementById("word-list").appendChild(card);
+    }
+    createCard(card);
+
+    document.getElementById("card-form").reset();
+  });
