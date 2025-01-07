@@ -3,7 +3,7 @@ import { states } from "./products.js";
 const randomIndex = Math.floor(Math.random() * states.length);
 
 const selectedState = states[randomIndex].state.toUpperCase();
-let guessedState = Array(selectedState.length).fill("_").join(" "); // To display blanks
+let guessedState = Array(selectedState.length).fill("_").join(" ");
 let incorrectGuesses = [];
 let attemptsLeft = 6;
 
@@ -35,7 +35,6 @@ function guessLetter(letter) {
   }
 }
 
-// Function to guess the full state
 function guessState(stateName) {
   stateName = stateName.toUpperCase();
   if (stateName === selectedState) {
@@ -55,11 +54,11 @@ document
     event.preventDefault();
     const input = document.getElementById("input").value;
     const card = document.createElement("div");
-    card.className = "bg-white p-6 rounded-lg shadow-lg w-80 mx-auto my-4"; //
+    card.className = "bg-white p-6 rounded-lg shadow-lg w-80 mx-auto my-4";
     function createCard(card) {
       card.innerHTML = `
+      <p class="text-gray-600">Your Guess</p>
         <h2 class="text-2xl font-semibold text-gray-800 mb-4">${input}</h2>
-        <p class="text-gray-600">"hi"</p>
     `;
       document.getElementById("word-list").appendChild(card);
     }
