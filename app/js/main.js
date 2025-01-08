@@ -1,52 +1,58 @@
 import { states } from "./products.js";
 
-const randomIndex = Math.floor(Math.random() * states.length);
-
-const selectedState = states[randomIndex].state.toUpperCase();
-let guessedState = Array(selectedState.length).fill("_").join(" ");
-let incorrectGuesses = [];
-let attemptsLeft = 6;
-
-function guessLetter(letter) {
-  letter = letter.toUpperCase();
-  if (attemptsLeft === 0 || guessedState.indexOf("_") === -1) {
-    console.log("Game Over or State Guessed!");
-    return;
-  }
-
-  if (selectedState.indexOf(letter) !== -1) {
-    console.log(`Correct! The letter "${letter}" is in the state.`);
-    let newGuessedState = "";
-    for (let i = 0; i < selectedState.length; i++) {
-      newGuessedState +=
-        selectedState[i] === letter || guessedState[i] !== "_"
-          ? selectedState[i]
-          : "_";
-    }
-    guessedState = newGuessedState.split("").join(" ");
-    console.log(guessedState);
-  } else {
-    // Incorrect guess
-    console.log(`Incorrect guess: "${letter}" is not in the state.`);
-    incorrectGuesses.push(letter);
-    attemptsLeft--;
-    console.log(`Attempts left: ${attemptsLeft}`);
-    console.log("Incorrect guesses: " + incorrectGuesses.join(", "));
-  }
+function generateRandomNumber() {
+  return Math.floor(Math.random() * 50) + 1;
 }
 
-function guessState(stateName) {
-  stateName = stateName.toUpperCase();
-  if (stateName === selectedState) {
-    console.log(
-      `Congratulations! You guessed the state correctly: ${stateName}`
-    );
-  } else {
-    console.log(`Incorrect. The state was not ${stateName}.`);
-    attemptsLeft--;
-    console.log(`Attempts left: ${attemptsLeft}`);
-  }
-}
+let randomNumber = generateRandomNumber();
+
+// const randomIndex = Math.floor(Math.random() * states.length);
+
+// const selectedState = states[randomIndex].state.toUpperCase();
+// let guessedState = Array(selectedState.length).fill("_").join(" ");
+// let incorrectGuesses = [];
+// let attemptsLeft = 6;
+
+// function guessLetter(letter) {
+//   letter = letter.toUpperCase();
+//   if (attemptsLeft === 0 || guessedState.indexOf("_") === -1) {
+//     console.log("Game Over or State Guessed!");
+//     return;
+//   }
+
+//   if (selectedState.indexOf(letter) !== -1) {
+//     console.log(`Correct! The letter "${letter}" is in the state.`);
+//     let newGuessedState = "";
+//     for (let i = 0; i < selectedState.length; i++) {
+//       newGuessedState +=
+//         selectedState[i] === letter || guessedState[i] !== "_"
+//           ? selectedState[i]
+//           : "_";
+//     }
+//     guessedState = newGuessedState.split("").join(" ");
+//     console.log(guessedState);
+//   } else {
+//     // Incorrect guess
+//     console.log(`Incorrect guess: "${letter}" is not in the state.`);
+//     incorrectGuesses.push(letter);
+//     attemptsLeft--;
+//     console.log(`Attempts left: ${attemptsLeft}`);
+//     console.log("Incorrect guesses: " + incorrectGuesses.join(", "));
+//   }
+// }
+
+// function guessState(stateName) {
+//   stateName = stateName.toUpperCase();
+//   if (stateName === selectedState) {
+//     console.log(
+//       `Congratulations! You guessed the state correctly: ${stateName}`
+//     );
+//   } else {
+//     console.log(`Incorrect. The state was not ${stateName}.`);
+//     attemptsLeft--;
+//     console.log(`Attempts left: ${attemptsLeft}`);
+//   }
+// }
 
 document
   .getElementById("card-form")
@@ -66,3 +72,25 @@ document
 
     document.getElementById("card-form").reset();
   });
+
+function createCards(states) {
+  const container = document.querySelector(".container");
+  container.innerHTML = "";
+
+  states.forEach((state) => {
+    const cardHTML = `
+        <div class="card">
+          <h2 class="card-name">${state.capital}</h2>
+        </div>
+      `;
+    container.insertAdjacentHTML("beforeend", cardHTML);
+  });
+}
+
+function summonCard() {
+  const stateSort = states.filter(
+    (State) => State.stateNumber === randomNumber
+  );
+  createCards(stateSort);
+}
+document.getElementById("playButton").addEventListener("click", summonCard);
