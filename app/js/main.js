@@ -48,6 +48,10 @@ import { states } from "./products.js";
 //   }
 // }
 
+function generateRandomNumber() {
+  return Math.floor(Math.random() * 50) + 1;
+}
+
 document
   .getElementById("card-form")
   .addEventListener("submit", function (event) {
@@ -55,22 +59,23 @@ document
     const input = document.getElementById("input").value;
     const card = document.createElement("div");
     card.className = "bg-white p-6 rounded-lg shadow-lg w-80 mx-auto my-4";
+
+    // Function to create the card HTML
     function createCard(card) {
       card.innerHTML = `
       <p class="text-gray-600">Your Guess</p>
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">${input}</h2>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">${input}</h2>
     `;
       document.getElementById("word-list").appendChild(card);
     }
-    createCard(card);
 
+    createCard(card);
     document.getElementById("card-form").reset();
   });
-// Function to create cards from the filtered states
+
 function createCards(states) {
   const container = document.querySelector(".container");
   container.innerHTML = "";
-
   states.forEach((state) => {
     const cardHTML = `
         <div class="card bg-black text-white rounded-lg shadow-2xl p-6 text-center transform transition-transform duration-300 hover:scale-110 hover:shadow-2xl border-4 border-gray-300">
@@ -82,6 +87,7 @@ function createCards(states) {
 }
 
 function summonCard() {
+  const randomNumber = generateRandomNumber();
   const stateSort = states.filter(
     (state) => state.stateNumber === randomNumber
   );
@@ -89,6 +95,5 @@ function summonCard() {
 }
 
 document.getElementById("playButton").addEventListener("click", () => {
-  randomNumber = Math.floor(Math.random() * 50) + 1;
   summonCard();
 });
