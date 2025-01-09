@@ -79,7 +79,7 @@ function createCards(states) {
     const cardHTML = `
         <div class="card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300">
           <h2 class="card-name text-2xl font-semibold"> Capital: ${state.capital}</h2>
-          <h2 class="card-name text-2xl font-semibold"> Population: ${state.population}</h2>
+          <h2 class="card-name text-9xl font-semibold"> Population: ${state.population}</h2>
         </div>
       `;
     container.insertAdjacentHTML("beforeend", cardHTML);
