@@ -1,11 +1,5 @@
 import { states } from "./products.js";
 
-function generateRandomNumber() {
-  return Math.floor(Math.random() * 50) + 1;
-}
-
-let randomNumber = generateRandomNumber();
-
 // const randomIndex = Math.floor(Math.random() * states.length);
 
 // const selectedState = states[randomIndex].state.toUpperCase();
@@ -72,15 +66,15 @@ document
 
     document.getElementById("card-form").reset();
   });
-
+// Function to create cards from the filtered states
 function createCards(states) {
   const container = document.querySelector(".container");
   container.innerHTML = "";
 
   states.forEach((state) => {
     const cardHTML = `
-        <div class="card">
-          <h2 class="card-name">${state.capital}</h2>
+        <div class="card bg-black text-white rounded-lg shadow-2xl p-6 text-center transform transition-transform duration-300 hover:scale-110 hover:shadow-2xl border-4 border-gray-300">
+          <h2 class="card-name text-2xl font-semibold">${state.capital}</h2>
         </div>
       `;
     container.insertAdjacentHTML("beforeend", cardHTML);
@@ -89,8 +83,12 @@ function createCards(states) {
 
 function summonCard() {
   const stateSort = states.filter(
-    (State) => State.stateNumber === randomNumber
+    (state) => state.stateNumber === randomNumber
   );
   createCards(stateSort);
 }
-document.getElementById("playButton").addEventListener("click", summonCard);
+
+document.getElementById("playButton").addEventListener("click", () => {
+  randomNumber = Math.floor(Math.random() * 50) + 1;
+  summonCard();
+});
