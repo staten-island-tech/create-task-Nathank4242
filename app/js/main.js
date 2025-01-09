@@ -60,7 +60,6 @@ document
     const card = document.createElement("div");
     card.className = "bg-white p-6 rounded-lg shadow-lg w-80 mx-auto my-4";
 
-    // Function to create the card HTML
     function createCard(card) {
       card.innerHTML = `
       <p class="text-gray-600">Your Guess</p>
@@ -80,6 +79,7 @@ function createCards(states) {
     const cardHTML = `
         <div class="card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300">
           <h2 class="card-name text-2xl font-semibold"> Capital: ${state.capital}</h2>
+          <h2 class="card-name text-2xl font-semibold"> Population: ${state.population}</h2>
         </div>
       `;
     container.insertAdjacentHTML("beforeend", cardHTML);
