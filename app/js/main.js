@@ -78,8 +78,8 @@ function createCards(states) {
   container.innerHTML = "";
   states.forEach((state) => {
     const cardHTML = `
-        <div class="card bg-black text-white rounded-lg shadow-2xl p-6 text-center transform transition-transform duration-300 hover:scale-110 hover:shadow-2xl border-4 border-gray-300">
-          <h2 class="card-name text-2xl font-semibold">${state.capital}</h2>
+        <div class="card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300">
+          <h2 class="card-name text-2xl font-semibold"> Capital: ${state.capital}</h2>
         </div>
       `;
     container.insertAdjacentHTML("beforeend", cardHTML);
