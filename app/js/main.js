@@ -58,8 +58,7 @@ document
     event.preventDefault();
     const input = document.getElementById("input").value;
     const card = document.createElement("div");
-    card.className = "bg-white p-6 rounded-lg shadow-lg w-80 mx-auto my-4";
-
+    card.className = "bg-white p-6 rounded-lg shadow-lg w-80 my-4 ml-auto";
     function createCard(card) {
       card.innerHTML = `
       <p class="text-gray-600">Your Guess</p>
@@ -67,10 +66,11 @@ document
     `;
       document.getElementById("word-list").appendChild(card);
     }
-
     createCard(card);
     document.getElementById("card-form").reset();
   });
+
+let hintsCreated = false;
 
 function createCards(states) {
   const container = document.querySelector(".container");
@@ -83,11 +83,15 @@ function createCards(states) {
           <h2 class="card-name text-2xl font-semibold">Capital: ${state.capital}</h2>
           <h2 class="card-name text-2xl font-semibold">State Population: ${state.population}</h2>
         </div>
-      `
+      `;
     container.insertAdjacentHTML("beforeend", stateCardHTML);
-  }}
+  });
+  hintsCreated = false;
+}
 
 function createHints(states) {
+  if (hintsCreated) return;
+
   states.forEach((state) => {
     const container = document.querySelector(".container");
     const hintCardHTML = `
@@ -98,6 +102,8 @@ function createHints(states) {
       `;
     container.insertAdjacentHTML("beforeend", hintCardHTML);
   });
+
+  hintsCreated = true;
 }
 
 function summonCard() {
