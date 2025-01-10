@@ -88,6 +88,20 @@ function createCards(states) {
   });
 }
 
+function createHints(states) {
+  const container = document.querySelector(".container");
+  container.innerHTML = "";
+  states.forEach((state) => {
+    const cardHTML = `
+        <div class="card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300">
+        <h2 class="card-name text-2xl font-semibold"> State:</h2>
+          <h2 class="card-name text-2xl font-semibold"> Year Established: ${state.yearEstablished}</h2>
+        </div>
+      `;
+    container.insertAdjacentHTML("beforeend", cardHTML);
+  });
+}
+
 function summonCard() {
   const randomNumber = generateRandomNumber();
   const stateSort = states.filter(
@@ -95,7 +109,15 @@ function summonCard() {
   );
   createCards(stateSort);
 }
-
 document.getElementById("playButton").addEventListener("click", () => {
   summonCard();
+});
+
+function summonHint() {
+  const randomNumber = generateRandomNumber();
+  const hint = states.filter((state) => state.stateNumber === randomNumber);
+  createHints(hint);
+}
+document.getElementById("hintButton").addEventListener("click", () => {
+  summonHint();
 });
