@@ -81,7 +81,6 @@ function createCards(states) {
         <h2 class="card-name text-2xl font-semibold"> State:</h2>
           <h2 class="card-name text-2xl font-semibold"> Capital: ${state.capital}</h2>
           <h2 class="card-name text-2xl font-semibold"> State population: ${state.population}</h2>
-          <h2 class="card-name text-2xl font-semibold"> Year Established: ${state.yearEstablished}</h2>
         </div>
       `;
     container.insertAdjacentHTML("beforeend", cardHTML);
@@ -90,11 +89,10 @@ function createCards(states) {
 
 function createHints(states) {
   const container = document.querySelector(".container");
-  container.innerHTML = "";
   states.forEach((state) => {
     const cardHTML = `
         <div class="card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300">
-        <h2 class="card-name text-2xl font-semibold"> State:</h2>
+        <h2 class="card-name text-2xl font-semibold"> Hint 1:</h2>
           <h2 class="card-name text-2xl font-semibold"> Year Established: ${state.yearEstablished}</h2>
         </div>
       `;
