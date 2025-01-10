@@ -75,28 +75,38 @@ document
 function createCards(states) {
   const container = document.querySelector(".container");
   container.innerHTML = "";
+
   states.forEach((state) => {
-    const cardHTML = `
-        <div class="card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300">
-        <h2 class="card-name text-2xl font-semibold"> State:</h2>
-          <h2 class="card-name text-2xl font-semibold"> Capital: ${state.capital}</h2>
-          <h2 class="card-name text-2xl font-semibold"> State population: ${state.population}</h2>
+    const stateCardHTML = `
+        <div class="state-card card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300">
+          <h2 class="card-name text-2xl font-semibold">State:</h2>
+          <h2 class="card-name text-2xl font-semibold">Capital: ${state.capital}</h2>
+          <h2 class="card-name text-2xl font-semibold">State Population: ${state.population}</h2>
         </div>
       `;
-    container.insertAdjacentHTML("beforeend", cardHTML);
+    container.insertAdjacentHTML("beforeend", stateCardHTML);
+
+    // Create the hint card for each state
+    const hintCardHTML = `
+        <div class="hint-card card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300 mt-4">
+          <h2 class="card-name text-2xl font-semibold">Hint 1:</h2>
+          <h2 class="card-name text-2xl font-semibold">Year Established: ${state.yearEstablished}</h2>
+        </div>
+      `;
+    container.insertAdjacentHTML("beforeend", hintCardHTML);
   });
 }
 
 function createHints(states) {
-  const container = document.querySelector(".container");
   states.forEach((state) => {
-    const cardHTML = `
-        <div class="card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300">
-        <h2 class="card-name text-2xl font-semibold"> Hint 1:</h2>
-          <h2 class="card-name text-2xl font-semibold"> Year Established: ${state.yearEstablished}</h2>
+    const container = document.querySelector(".container");
+    const hintCardHTML = `
+        <div class="hint-card card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300 mt-4">
+          <h2 class="card-name text-2xl font-semibold">Hint 1:</h2>
+          <h2 class="card-name text-2xl font-semibold">Year Established: ${state.yearEstablished}</h2>
         </div>
       `;
-    container.insertAdjacentHTML("beforeend", cardHTML);
+    container.insertAdjacentHTML("beforeend", hintCardHTML);
   });
 }
 
