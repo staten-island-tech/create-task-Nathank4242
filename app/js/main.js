@@ -1,8 +1,9 @@
-import { states } from "./products.js";
+import { states } from "./products.js"; // Import the states list from products.js
 
-// Store the current state for guessing
 let currentState = null;
+let gameStarted = false; // Track if the game has started
 
+// Function to generate a random number between 1 and 50
 function generateRandomNumber() {
   return Math.floor(Math.random() * 50) + 1;
 }
@@ -11,19 +12,32 @@ function generateRandomNumber() {
 document
   .getElementById("card-form")
   .addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault(); // Prevents the form from submitting and reloading the page
 
     const input = document.getElementById("input").value.trim().toLowerCase();
 
-    // Check if the input guess is correct
-    if (currentState && input === currentState.name.toLowerCase()) {
+    // Check if the game has started
+    if (!gameStarted) {
       document.getElementById("word-list").innerHTML = `
-        <p class="text-green-500">Correct! You guessed ${currentState.name}!</p>
+        <p class="text-red-500">Please start a new game to guess.</p>
       `;
-    } else {
-      document.getElementById("word-list").innerHTML = `
-        <p class="text-red-500">Incorrect. Try again!</p>
-      `;
+      return;
+    }
+
+    // Check if currentState is set and the name matches the user's guess
+    if (currentState && currentState.name) {
+      if (input === currentState.name.toLowerCase()) {
+        document.getElementById("word-list").innerHTML = `
+          <p class="text-green-500">Yes, you got it correct! You guessed ${currentState.name}!</p>
+        `;
+      } else {
+        document.getElementById("word-list").innerHTML = `
+          <p class="text-red-500">Incorrect. The correct answer was ${currentState.name}. Try again!</p>
+        `;
+      }
+
+      gameStarted = false; // End the game after one guess
+      resetGame(); // Reset the game for the next round
     }
 
     // Clear the input after each guess
@@ -34,15 +48,25 @@ document
 function summonCard() {
   const randomNumber = generateRandomNumber();
   const stateSort = states.filter(
-    (state) => state.stateNumber === randomNumber
+    (state) => state.stateNumber === randomNumber // Match by state number (adjust as needed)
   );
-  currentState = stateSort[0]; // Store the current state for guessing
 
-  createCards(stateSort);
-  enableGuessingForm(); // Enable the guessing form
+  if (stateSort.length > 0) {
+    currentState = stateSort[0]; // Store the current state for guessing
+    gameStarted = true; // Start the game
+
+    createCards(stateSort); // Display the state card
+    document.getElementById("word-list").innerHTML = `
+      <p class="text-blue-500">Game started! You have one guess.</p>
+    `;
+  } else {
+    document.getElementById("word-list").innerHTML = `
+      <p class="text-red-500">No state found. Please try again.</p>
+    `;
+  }
 }
 
-// Display the state card
+// Function to display the state card
 function createCards(states) {
   const container = document.querySelector(".container");
   container.innerHTML = ""; // Clear any previous state cards
@@ -59,25 +83,17 @@ function createCards(states) {
   });
 }
 
-// Enable the guessing form after clicking "Play"
-function enableGuessingForm() {
-  document.getElementById("input").disabled = false; // Enable input field
-  document.querySelector('input[type="submit"]').disabled = false; // Enable submit button
-}
-
-// Disable the guessing form if necessary (e.g., reset between rounds)
-function disableGuessingForm() {
-  document.getElementById("input").disabled = true; // Disable input field
-  document.querySelector('input[type="submit"]').disabled = true; // Disable submit button
+// Function to reset the game state
+function resetGame() {
+  document.getElementById("input").value = ""; // Clear the input field
+  document.getElementById("hintButton").disabled = false; // Enable the hint button again
 }
 
 // Start a new game when the "Play" button is clicked
 document.getElementById("playButton").addEventListener("click", () => {
   summonCard();
-  disableGuessingForm(); // Disable form until state is revealed
-
-  // Re-enable the Hint button when starting a new round
   document.getElementById("hintButton").disabled = false;
+  document.getElementById("word-list").innerHTML = ""; // Clear previous results message
 });
 
 // Handle the "Hint" button click (optional functionality)
@@ -97,7 +113,6 @@ function createHints(states) {
 document.getElementById("hintButton").addEventListener("click", () => {
   if (currentState) {
     createHints([currentState]);
-    // Disable the hint button after it is clicked
-    document.getElementById("hintButton").disabled = true;
+    document.getElementById("hintButton").disabled = true; // Disable hint button after it is clicked
   }
 });
