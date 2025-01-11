@@ -1,127 +1,103 @@
 import { states } from "./products.js";
 
-// const randomIndex = Math.floor(Math.random() * states.length);
-
-// const selectedState = states[randomIndex].state.toUpperCase();
-// let guessedState = Array(selectedState.length).fill("_").join(" ");
-// let incorrectGuesses = [];
-// let attemptsLeft = 6;
-
-// function guessLetter(letter) {
-//   letter = letter.toUpperCase();
-//   if (attemptsLeft === 0 || guessedState.indexOf("_") === -1) {
-//     console.log("Game Over or State Guessed!");
-//     return;
-//   }
-
-//   if (selectedState.indexOf(letter) !== -1) {
-//     console.log(`Correct! The letter "${letter}" is in the state.`);
-//     let newGuessedState = "";
-//     for (let i = 0; i < selectedState.length; i++) {
-//       newGuessedState +=
-//         selectedState[i] === letter || guessedState[i] !== "_"
-//           ? selectedState[i]
-//           : "_";
-//     }
-//     guessedState = newGuessedState.split("").join(" ");
-//     console.log(guessedState);
-//   } else {
-//     // Incorrect guess
-//     console.log(`Incorrect guess: "${letter}" is not in the state.`);
-//     incorrectGuesses.push(letter);
-//     attemptsLeft--;
-//     console.log(`Attempts left: ${attemptsLeft}`);
-//     console.log("Incorrect guesses: " + incorrectGuesses.join(", "));
-//   }
-// }
-
-// function guessState(stateName) {
-//   stateName = stateName.toUpperCase();
-//   if (stateName === selectedState) {
-//     console.log(
-//       `Congratulations! You guessed the state correctly: ${stateName}`
-//     );
-//   } else {
-//     console.log(`Incorrect. The state was not ${stateName}.`);
-//     attemptsLeft--;
-//     console.log(`Attempts left: ${attemptsLeft}`);
-//   }
-// }
+// Store the current state for guessing
+let currentState = null;
 
 function generateRandomNumber() {
   return Math.floor(Math.random() * 50) + 1;
 }
 
+// Handle the guessing logic when the form is submitted
 document
   .getElementById("card-form")
   .addEventListener("submit", function (event) {
-    event.preventDefault();
-    const input = document.getElementById("input").value;
-    const card = document.createElement("div");
-    card.className = "bg-white p-6 rounded-lg shadow-lg w-80 my-4 ml-auto";
-    function createCard(card) {
-      card.innerHTML = `
-      <p class="text-gray-600">Your Guess</p>
-      <h2 class="text-2xl font-semibold text-gray-800 mb-4">${input}</h2>
-    `;
-      document.getElementById("word-list").appendChild(card);
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    const input = document.getElementById("input").value.trim().toLowerCase();
+
+    // Check if the input guess is correct
+    if (currentState && input === currentState.name.toLowerCase()) {
+      document.getElementById("word-list").innerHTML = `
+        <p class="text-green-500">Correct! You guessed ${currentState.name}!</p>
+      `;
+    } else {
+      document.getElementById("word-list").innerHTML = `
+        <p class="text-red-500">Incorrect. Try again!</p>
+      `;
     }
-    createCard(card);
-    document.getElementById("card-form").reset();
+
+    // Clear the input after each guess
+    document.getElementById("input").value = "";
   });
 
-let hintsCreated = false;
-
-function createCards(states) {
-  const container = document.querySelector(".container");
-  container.innerHTML = "";
-
-  states.forEach((state) => {
-    const stateCardHTML = `
-        <div class="state-card card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300">
-          <h2 class="card-name text-2xl font-semibold">State:</h2>
-          <h2 class="card-name text-2xl font-semibold">Capital: ${state.capital}</h2>
-          <h2 class="card-name text-2xl font-semibold">State Population: ${state.population}</h2>
-        </div>
-      `;
-    container.insertAdjacentHTML("beforeend", stateCardHTML);
-  });
-  hintsCreated = false;
-}
-
-function createHints(states) {
-  if (hintsCreated) return;
-
-  states.forEach((state) => {
-    const container = document.querySelector(".container");
-    const hintCardHTML = `
-        <div class="hint-card card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300 mt-4">
-          <h2 class="card-name text-2xl font-semibold">Hint 1:</h2>
-          <h2 class="card-name text-2xl font-semibold">Year Established: ${state.yearEstablished}</h2>
-        </div>
-      `;
-    container.insertAdjacentHTML("beforeend", hintCardHTML);
-  });
-
-  hintsCreated = true;
-}
-
+// Function to generate and display the state card
 function summonCard() {
   const randomNumber = generateRandomNumber();
   const stateSort = states.filter(
     (state) => state.stateNumber === randomNumber
   );
+  currentState = stateSort[0]; // Store the current state for guessing
+
   createCards(stateSort);
+  enableGuessingForm(); // Enable the guessing form
 }
+
+// Display the state card
+function createCards(states) {
+  const container = document.querySelector(".container");
+  container.innerHTML = ""; // Clear any previous state cards
+
+  states.forEach((state) => {
+    const stateCardHTML = `
+      <div class="state-card card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300">
+        <h2 class="card-name text-2xl font-semibold">State:</h2>
+        <h3 class="card-name text-xl font-semibold">Capital: ${state.capital}</h3>
+        <p class="card-name">Population: ${state.population}</p>
+      </div>
+    `;
+    container.insertAdjacentHTML("beforeend", stateCardHTML);
+  });
+}
+
+// Enable the guessing form after clicking "Play"
+function enableGuessingForm() {
+  document.getElementById("input").disabled = false; // Enable input field
+  document.querySelector('input[type="submit"]').disabled = false; // Enable submit button
+}
+
+// Disable the guessing form if necessary (e.g., reset between rounds)
+function disableGuessingForm() {
+  document.getElementById("input").disabled = true; // Disable input field
+  document.querySelector('input[type="submit"]').disabled = true; // Disable submit button
+}
+
+// Start a new game when the "Play" button is clicked
 document.getElementById("playButton").addEventListener("click", () => {
   summonCard();
+  disableGuessingForm(); // Disable form until state is revealed
+
+  // Re-enable the Hint button when starting a new round
+  document.getElementById("hintButton").disabled = false;
 });
 
-function summonHint() {
-  const randomNumber = generateRandomNumber();
-  const hint = states.filter((state) => state.stateNumber === randomNumber);
-  createHints(hint);
+// Handle the "Hint" button click (optional functionality)
+function createHints(states) {
+  states.forEach((state) => {
+    const container = document.querySelector(".container");
+    const hintCardHTML = `
+      <div class="hint-card card bg-black text-white rounded-lg shadow-2xl p-6 text-center border-gray-300 mt-4">
+        <h2 class="card-name text-2xl font-semibold">Hint 1:</h2>
+        <p>Year Established: ${state.yearEstablished}</p>
+      </div>
+    `;
+    container.insertAdjacentHTML("beforeend", hintCardHTML);
+  });
 }
+
 document.getElementById("hintButton").addEventListener("click", () => {
-  summonHint();
+  if (currentState) {
+    createHints([currentState]);
+    // Disable the hint button after it is clicked
+    document.getElementById("hintButton").disabled = true;
+  }
 });
