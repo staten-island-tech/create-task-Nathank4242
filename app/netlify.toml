@@ -1,6 +1,8 @@
 [build]
-  command = "go build -o myapp"  
+  command = "go build"  
   publish = "dist"  
 
 [build.environment]
-  GO_VERSION = "1.19.1" 
+  GO_VERSION = "1.19" 
+
+  
